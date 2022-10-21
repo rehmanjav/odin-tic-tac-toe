@@ -1,0 +1,54 @@
+body * {
+    font-size: 2rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+    margin: 0px;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+header {
+    height: 3rem;
+    background-color: #588157;
+    padding: 10px;
+    font-weight: bold;
+}
+
+main {
+    background-color: #dad7cd;
+    padding: 10px;
+    min-height: calc(100vh - 3rem - 40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main > div {
+    background-color: #a3b18a;
+}
+
+button {
+    border-radius: 20px;
+    padding: 20px;
+    background-color: #dad7cd;
+    border: none;
+}
+
+button:hover {
+    background-color: #7e8a6b;
+}
+
+button:active {
+    background-color: #588157;
+}
+
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    gap: 30px;
+}
