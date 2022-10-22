@@ -52,3 +52,10 @@ button:active {
     padding: 30px;
     gap: 30px;
 }
+
+.multi-name {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 40px;
+  }
