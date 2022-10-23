@@ -79,13 +79,6 @@ const displayController = (function() {
       btnStart.textContent = "Start Game!";
       btnStart.classList.add("btn-start-game");
 
-      btnStart.addEventListener('click', () => {
-        console.log("start game");
-        let xName = document.querySelector(".x-name").value;
-        let oName = document.querySelector(".o-name").value;
-        console.log(xName + oName);
-      });
-
       xLabel.appendChild(xInput);
       oLabel.appendChild(oInput);
 
@@ -97,9 +90,77 @@ const displayController = (function() {
       let mainDiv = document.querySelector("main");
       mainDiv.appendChild(nameDiv);
 
+      btnStart.addEventListener('click', () => {
+        
+        let xName = document.querySelector(".x-name").value;
+        let oName = document.querySelector(".o-name").value;
+        
+        if (xName.length >= 1 && oName.length >= 1) {
+          gameEngine.xPlayer = playerFactory(xName, "x");
+          gameEngine.oPlayer = playerFactory(oName, "o");
+          boardScreen();
+
+          console.log(gameEngine.xPlayer.name);
+          console.log(gameEngine.oPlayer.name);
+          console.log("start game");
+        }
+      });
+
     }
 
     function boardScreen() {
+      _clearMain();
+
+      let mainDiv = document.querySelector("main");
+      mainDiv.innerHTML = `<div class="board-screen">
+      <div class="display">
+        <p>This is the display</p>
+      </div>
+      <div class="board-container">
+        <div class="quadrant" data-index="0"></div>
+        <div class="quadrant" data-index="1"></div>
+        <div class="quadrant" data-index="2"></div>
+        <div class="quadrant" data-index="3"></div>
+        <div class="quadrant" data-index="4"></div>
+        <div class="quadrant" data-index="5"></div>
+        <div class="quadrant" data-index="6"></div>
+        <div class="quadrant" data-index="7"></div>
+        <div class="quadrant" data-index="8"></div>
+      </div>
+    </div>`
+
+      gameEngine.currentTurn = gameEngine.xPlayer;
+
+      while (!gameEngine.winnerDeclared) {
+        let displayP = document.querySelector(".display > p");
+        displayP.textContent = `It is ${gameEngine.currentTurn.name}'s turn. Please place an ${gameEngine.currentTurn.symbol.toUpperCase()}.`
+        
+        if (gameEngine.currentTurn.symbol == "x") {
+          for (let i = 0; i <= 8; i++) {
+            let quadrantState = gameBoard.getBoard(i);
+            if (!quadrantState) {
+              let targetQuad = document.querySelector(`[data-index="${i}"]`);
+              
+              function markX() {
+
+              }
+
+              targetQuad.addEventListener('click', markX);
+            }
+          }
+
+        } else if (gameEngine.currentTurn.symbol == "y") {
+          for (let i = 0; i <= 8; i++) {
+            let quadrantState = gameBoard.getBoard(i);
+            if (!quadrantState) {
+
+            }
+          }
+        }
+
+        break;
+
+      }
 
     }
   
@@ -123,15 +184,48 @@ const gameEngine = (function() {
   // }
 
   let gameType = '';
-  let xName = '';
-  let oName = ''; 
+  let xPlayer;
+  let oPlayer; 
+  let currentTurn;
+  let winnerDeclared = false;
 
   
 
-  return {gameType,
-    
+  return {
+    gameType,
+    xPlayer,
+    oPlayer,
+    currentTurn,
+    winnerDeclared,
   };
 })();
+
+const gameBoard = (function() {  
+  // var _privateProperty = 'Hello World';
+  // var publicProperty = 'I am a public property';
+
+  // function _privateMethod() {
+  //   console.log(_privateProperty);
+  // }
+
+  // function publicMethod() {
+  //   _privateMethod();
+  // }
+
+  let gameBoard = ["", "", "", "", "", "", "", "", ""];
+
+  function getBoard(index) {
+    return gameBoard[index];
+  }
+
+  return {
+    getBoard,
+  };
+})();
+
+const playerFactory = (name, symbol) => {
+  return {name, symbol};
+};
 
   // MAIN LOOP
 

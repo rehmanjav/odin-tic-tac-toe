@@ -58,4 +58,90 @@ button:active {
     flex-direction: column;
     padding: 20px;
     gap: 40px;
+}
+
+/* BOARD SCREEN */
+
+.board-screen {
+    width: 70vw;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    gap: 20px;
   }
+  
+  .board-container {
+    width: 31vw;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .quadrant {
+    width: 10vw;
+    height: 10vw;
+    background-color: white;
+  }
+  
+  .quadrant:hover {
+    background-color: lightgray;
+  }
+  
+  .display {
+    border: black 1px solid;
+    width: 46vw;
+    padding: 10px;
+  }
+
+  .o {
+    background-image: url(./images/oIcon.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .x {
+    background-image: url(./images/xIcon.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .quadrant[data-index="0"] {
+    border-bottom: black 1px solid;
+    border-right: black 1px solid;
+  }
+
+  .quadrant[data-index="1"] {
+    border-bottom: black 1px solid;
+    border-right: black 1px solid;
+}
+
+.quadrant[data-index="2"] {
+    border-bottom: black 1px solid;
+}
+
+.quadrant[data-index="3"] {
+    border-bottom: black 1px solid;
+    border-right: black 1px solid;
+}
+
+.quadrant[data-index="4"] {
+    border-bottom: black 1px solid;
+    border-right: black 1px solid;
+}
+
+.quadrant[data-index="5"] {
+    border-bottom: black 1px solid;
+}
+
+.quadrant[data-index="6"] {
+    border-right: black 1px solid;
+}
+
+.quadrant[data-index="7"] {
+
+}
+
+.quadrant[data-index="8"] {
+    border-left: black 1px solid;
+}
