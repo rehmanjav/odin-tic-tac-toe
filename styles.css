@@ -138,10 +138,6 @@ button:active {
     border-right: black 1px solid;
 }
 
-.quadrant[data-index="7"] {
-
-}
-
 .quadrant[data-index="8"] {
     border-left: black 1px solid;
 }

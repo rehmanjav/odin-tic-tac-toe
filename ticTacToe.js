@@ -1,58 +1,47 @@
 "use strict"
 
 const displayController = (function() {  
-    // var _privateProperty = 'Hello World';
-    // var publicProperty = 'I am a public property';
-  
-    // function _privateMethod() {
-    //   console.log(_privateProperty);
-    // }
-
-    function _clearMain() {
-        let mainDiv = document.querySelector("main");
-
-        while(mainDiv.firstChild){
-            mainDiv.removeChild(mainDiv.firstChild);
-        }
-
-    }
-  
-    // function publicMethod() {
-    //   _privateMethod();
-    // }
-
-    function startScreen() {
-      _clearMain();
-
-      let startDiv = document.createElement("div");
-      startDiv.classList.add("start-screen");
-
-      let p = document.createElement('p');
-      p.textContent = "Let's play Tic Tac Toe";
-
-      let btnSingle = document.createElement('button');
-      btnSingle.textContent = "Singleplayer";
-      btnSingle.classList.add("btn-singleplayer");
-
-      let btnMulti = document.createElement('button');
-      btnMulti.textContent = "Multiplayer";
-      btnMulti.classList.add("btn-multiplayer");
-
-      startDiv.appendChild(p);
-      startDiv.appendChild(btnSingle);
-      startDiv.appendChild(btnMulti);
-
+  function _clearMain() {
       let mainDiv = document.querySelector("main");
-      mainDiv.appendChild(startDiv);
 
-      btnSingle.addEventListener('click', () => {
-        console.log("single");
-      });
-      btnMulti.addEventListener('click', () => {
-        gameEngine.gameType = "multiplayer";
-        displayController.multiplayerNames();
-      });
-    }
+      while(mainDiv.firstChild){
+          mainDiv.removeChild(mainDiv.firstChild);
+      }
+
+  }
+
+  function startScreen() {
+    _clearMain();
+
+    let startDiv = document.createElement("div");
+    startDiv.classList.add("start-screen");
+
+    let p = document.createElement('p');
+    p.textContent = "Let's play Tic Tac Toe";
+
+    let btnSingle = document.createElement('button');
+    btnSingle.textContent = "Singleplayer";
+    btnSingle.classList.add("btn-singleplayer");
+
+    let btnMulti = document.createElement('button');
+    btnMulti.textContent = "Multiplayer";
+    btnMulti.classList.add("btn-multiplayer");
+
+    startDiv.appendChild(p);
+    startDiv.appendChild(btnSingle);
+    startDiv.appendChild(btnMulti);
+
+    let mainDiv = document.querySelector("main");
+    mainDiv.appendChild(startDiv);
+
+    btnSingle.addEventListener('click', () => {
+      console.log("single");
+    });
+    btnMulti.addEventListener('click', () => {
+      gameEngine.gameType = "multiplayer";
+      displayController.multiplayerNames();
+    });
+  }
 
     function multiplayerNames() {
       _clearMain();
@@ -127,41 +116,54 @@ const displayController = (function() {
         <div class="quadrant" data-index="7"></div>
         <div class="quadrant" data-index="8"></div>
       </div>
-    </div>`
+    </div>`;
 
       gameEngine.currentTurn = gameEngine.xPlayer;
+
+      let quadrants = document.querySelectorAll(".quadrant");
+
+      quadrants.forEach(quadrant => {
+        quadrant.addEventListener('click', e => {
+          console.log(e.target.getAttribute('data-index'));
+          let clickedIndex = e.target.getAttribute('data-index');
+          
+          if (gameBoard.getBoard(clickedIndex) == "") {
+            if (gameEngine.currentTurn.symbol == 'x') {
+              console.log("x");
+              // Change background
+              e.target.classList.add("x");
+              // Set gameBoard index
+              gameBoard.setBoard(clickedIndex, "x");
+              // Test for winner
+
+              // Change currentTurn
+
+
+
+
+            } else if (gameEngine.currentTurn.symbol == 'o') {
+              console.log("o");
+              // Change background
+              e.target.classList.add("o");
+              // Set gameBoard index
+              gameBoard.setBoard(clickedIndex, "o");
+              // Test for winner
+
+              // Change currentTurn
+            }
+          }
+          
+        });
+      });
 
       while (!gameEngine.winnerDeclared) {
         let displayP = document.querySelector(".display > p");
         displayP.textContent = `It is ${gameEngine.currentTurn.name}'s turn. Please place an ${gameEngine.currentTurn.symbol.toUpperCase()}.`
         
-        if (gameEngine.currentTurn.symbol == "x") {
-          for (let i = 0; i <= 8; i++) {
-            let quadrantState = gameBoard.getBoard(i);
-            if (!quadrantState) {
-              let targetQuad = document.querySelector(`[data-index="${i}"]`);
-              
-              function markX() {
-
-              }
-
-              targetQuad.addEventListener('click', markX);
-            }
-          }
-
-        } else if (gameEngine.currentTurn.symbol == "y") {
-          for (let i = 0; i <= 8; i++) {
-            let quadrantState = gameBoard.getBoard(i);
-            if (!quadrantState) {
-
-            }
-          }
-        }
 
         break;
 
       }
-
     }
   
     return {startScreen,
@@ -172,24 +174,11 @@ const displayController = (function() {
   })();
 
 const gameEngine = (function() {  
-  // var _privateProperty = 'Hello World';
-  // var publicProperty = 'I am a public property';
-
-  // function _privateMethod() {
-  //   console.log(_privateProperty);
-  // }
-
-  // function publicMethod() {
-  //   _privateMethod();
-  // }
-
   let gameType = '';
   let xPlayer;
   let oPlayer; 
   let currentTurn;
   let winnerDeclared = false;
-
-  
 
   return {
     gameType,
@@ -201,25 +190,24 @@ const gameEngine = (function() {
 })();
 
 const gameBoard = (function() {  
-  // var _privateProperty = 'Hello World';
-  // var publicProperty = 'I am a public property';
-
-  // function _privateMethod() {
-  //   console.log(_privateProperty);
-  // }
-
-  // function publicMethod() {
-  //   _privateMethod();
-  // }
-
   let gameBoard = ["", "", "", "", "", "", "", "", ""];
 
   function getBoard(index) {
     return gameBoard[index];
   }
 
+  function setBoard(index, value) {
+    gameBoard[index] = value;
+  }
+
+  function testWin() {
+
+  }
+
   return {
     getBoard,
+    setBoard,
+    testWin,
   };
 })();
 
