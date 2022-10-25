@@ -141,3 +141,13 @@ button:active {
 .quadrant[data-index="8"] {
     border-left: black 1px solid;
 }
+
+/* Winner screen */
+
+.winner-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+  }

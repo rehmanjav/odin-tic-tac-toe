@@ -94,7 +94,6 @@ const displayController = (function() {
           console.log("start game");
         }
       });
-
     }
 
     function boardScreen() {
@@ -135,12 +134,17 @@ const displayController = (function() {
               // Set gameBoard index
               gameBoard.setBoard(clickedIndex, "x");
               // Test for winner
-
-              // Change currentTurn
-
-
-
-
+              console.log(gameBoard.testWin());
+              if (gameBoard.testWin() == "x") {
+                gameEngine.winnerDeclared = true;
+                winnerScreen(gameEngine.xPlayer);
+              } else {
+                // Change currentTurn
+                gameEngine.currentTurn = gameEngine.oPlayer;
+                let displayP = document.querySelector(".display > p");
+                displayP.textContent = `It is ${gameEngine.currentTurn.name}'s turn. Please place an ${gameEngine.currentTurn.symbol.toUpperCase()}.`
+              }
+              
             } else if (gameEngine.currentTurn.symbol == 'o') {
               console.log("o");
               // Change background
@@ -148,8 +152,16 @@ const displayController = (function() {
               // Set gameBoard index
               gameBoard.setBoard(clickedIndex, "o");
               // Test for winner
-
-              // Change currentTurn
+              console.log(gameBoard.testWin());
+              if (gameBoard.testWin() == "o") {
+                gameEngine.winnerDeclared = true;
+                winnerScreen(gameEngine.oPlayer);
+              } else {
+                // Change currentTurn
+                gameEngine.currentTurn = gameEngine.xPlayer;
+                let displayP = document.querySelector(".display > p");
+                displayP.textContent = `It is ${gameEngine.currentTurn.name}'s turn. Please place an ${gameEngine.currentTurn.symbol.toUpperCase()}.`
+              }
             }
           }
           
@@ -159,16 +171,33 @@ const displayController = (function() {
       while (!gameEngine.winnerDeclared) {
         let displayP = document.querySelector(".display > p");
         displayP.textContent = `It is ${gameEngine.currentTurn.name}'s turn. Please place an ${gameEngine.currentTurn.symbol.toUpperCase()}.`
-        
-
         break;
-
       }
+    }
+
+    function winnerScreen(winner) {
+      _clearMain();
+
+      let mainDiv = document.querySelector("main");
+      mainDiv.innerHTML = `<div class="winner-screen">
+      <p>${winner.name} wins!!!!!</p>
+      <button class="btn-play-again">Play again?</button>
+    </div>`;
+
+      let btnReplay = document.querySelector(".btn-play-again");
+      btnReplay.addEventListener('click', () => {
+        gameEngine.currentTurn = gameEngine.xPlayer;
+        gameEngine.winnerDeclared = false;
+        gameBoard.clearBoard();
+        displayController.boardScreen();
+      });
+
     }
   
     return {startScreen,
             multiplayerNames,
             boardScreen,
+            winnerScreen,
 
     };
   })();
@@ -201,13 +230,40 @@ const gameBoard = (function() {
   }
 
   function testWin() {
+    if ((gameBoard["0"] == "x" && gameBoard["1"] == "x" && gameBoard["2"] == "x") ||
+        (gameBoard["3"] == "x" && gameBoard["4"] == "x" && gameBoard["5"] == "x") ||
+        (gameBoard["6"] == "x" && gameBoard["7"] == "x" && gameBoard["8"] == "x") ||
+        (gameBoard["0"] == "x" && gameBoard["3"] == "x" && gameBoard["6"] == "x") ||
+        (gameBoard["1"] == "x" && gameBoard["4"] == "x" && gameBoard["7"] == "x") ||
+        (gameBoard["2"] == "x" && gameBoard["5"] == "x" && gameBoard["8"] == "x") ||
+        (gameBoard["6"] == "x" && gameBoard["4"] == "x" && gameBoard["2"] == "x") ||
+        (gameBoard["0"] == "x" && gameBoard["4"] == "x" && gameBoard["8"] == "x")) {
 
+      return "x";
+    } else if ((gameBoard["0"] == "o" && gameBoard["1"] == "o" && gameBoard["2"] == "o") ||
+               (gameBoard["3"] == "o" && gameBoard["4"] == "o" && gameBoard["5"] == "o") ||
+               (gameBoard["6"] == "o" && gameBoard["7"] == "o" && gameBoard["8"] == "o") ||
+               (gameBoard["0"] == "o" && gameBoard["3"] == "o" && gameBoard["6"] == "o") ||
+               (gameBoard["1"] == "o" && gameBoard["4"] == "o" && gameBoard["7"] == "o") ||
+               (gameBoard["2"] == "o" && gameBoard["5"] == "o" && gameBoard["8"] == "o") ||
+               (gameBoard["6"] == "o" && gameBoard["4"] == "o" && gameBoard["2"] == "o") ||
+               (gameBoard["0"] == "o" && gameBoard["4"] == "o" && gameBoard["8"] == "o")) {
+
+      return "o";
+    } else {
+      return false;
+    }
+  }
+
+  function clearBoard() {
+    gameBoard = ["", "", "", "", "", "", "", "", ""];
   }
 
   return {
     getBoard,
     setBoard,
     testWin,
+    clearBoard,
   };
 })();
 
