@@ -138,6 +138,9 @@ const displayController = (function() {
               if (gameBoard.testWin() == "x") {
                 gameEngine.winnerDeclared = true;
                 winnerScreen(gameEngine.xPlayer);
+              } else if (gameBoard.testWin() == "tie") {
+                gameEngine.winnerDeclared = true;
+                winnerScreen("tie");
               } else {
                 // Change currentTurn
                 gameEngine.currentTurn = gameEngine.oPlayer;
@@ -156,6 +159,9 @@ const displayController = (function() {
               if (gameBoard.testWin() == "o") {
                 gameEngine.winnerDeclared = true;
                 winnerScreen(gameEngine.oPlayer);
+              } else if (gameBoard.testWin() == "tie") {
+                gameEngine.winnerDeclared = true;
+                winnerScreen("tie");
               } else {
                 // Change currentTurn
                 gameEngine.currentTurn = gameEngine.xPlayer;
@@ -178,12 +184,21 @@ const displayController = (function() {
     function winnerScreen(winner) {
       _clearMain();
 
-      let mainDiv = document.querySelector("main");
-      mainDiv.innerHTML = `<div class="winner-screen">
+      if (winner == "tie") {
+        let mainDiv = document.querySelector("main");
+        mainDiv.innerHTML = `<div class="winner-screen">
+        <p>Game tied.</p>
+        <button class="btn-play-again">Play again?</button>
+      </div>`;
+
+      } else {
+        let mainDiv = document.querySelector("main");
+        mainDiv.innerHTML = `<div class="winner-screen">
       <p>${winner.name} wins!!!!!</p>
       <button class="btn-play-again">Play again?</button>
     </div>`;
-
+      }
+      
       let btnReplay = document.querySelector(".btn-play-again");
       btnReplay.addEventListener('click', () => {
         gameEngine.currentTurn = gameEngine.xPlayer;
@@ -250,6 +265,16 @@ const gameBoard = (function() {
                (gameBoard["0"] == "o" && gameBoard["4"] == "o" && gameBoard["8"] == "o")) {
 
       return "o";
+    } else if (gameBoard["0"] != "" &&
+               gameBoard["1"] != "" &&
+               gameBoard["2"] != "" &&
+               gameBoard["3"] != "" &&
+               gameBoard["4"] != "" &&
+               gameBoard["5"] != "" &&
+               gameBoard["6"] != "" &&
+               gameBoard["7"] != "" &&
+               gameBoard["8"] != "") {
+      return "tie";
     } else {
       return false;
     }
